@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Multi Agent Simulation</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    canvas { border: 1px solid #ccc; }
+    #controls { margin: 10px 0; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Multi Agent Simulation</h1>
+  <div id="controls">
+    <label for="speed">Speed:</label>
+    <input type="range" id="speed" min="1" max="60" value="30" />
+    <span id="speedValue">30</span> steps/sec
+  </div>
+  <canvas id="world" width="500" height="500"></canvas>
+  <h2>Population over Time</h2>
+  <canvas id="populationChart" width="500" height="200"></canvas>
+  <script src="main.js"></script>
+</body>
+</html>
