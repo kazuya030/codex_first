@@ -54,6 +54,8 @@ Simply open `index.html` in a modern web browser with JavaScript enabled. The si
 
 No additional build tools or dependencies are required.
 
+A live version is hosted on GitHub Pages: <https://your-github-username.github.io/codex_first/>
+
 ### Controls
 
 Above the canvas there are sliders that let you tweak the behaviour while the simulation is running:
@@ -61,6 +63,12 @@ Above the canvas there are sliders that let you tweak the behaviour while the si
 - **Time Speed** – how many simulation steps are performed per animation frame.
 - **Herbivore Birth Cooldown** – number of steps a herbivore must wait after reproducing.
 - **Herbivore Reproduction Energy** – energy threshold required for herbivores to give birth.
+- **Grass Regrow Time** – how many steps it takes for eaten grass to regrow.
+- **Herbivore Move Cost** – energy lost by herbivores each move.
+- **Carnivore Move Cost** – energy lost by carnivores each move.
+- **Herbivore Energy Gain** – energy herbivores receive when eating grass.
+- **Carnivore Energy Gain** – energy carnivores gain when eating a herbivore.
+- **Carnivore Reproduction Energy** – energy threshold required for carnivores to reproduce.
 
 Adjusting these values updates the simulation immediately.
 
