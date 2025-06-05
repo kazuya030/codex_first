@@ -62,6 +62,43 @@ const carnEnergyVal = document.getElementById('carnEnergyVal');
 
 let speedAccumulator = 0;
 
+let stepCount = 0;
+const chartCtx = document.getElementById('populationChart').getContext('2d');
+const maxDataPoints = 100;
+const chart = new Chart(chartCtx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: 'Grass',
+        data: [],
+        borderColor: 'green',
+        fill: false
+      },
+      {
+        label: 'Herbivores',
+        data: [],
+        borderColor: 'blue',
+        fill: false
+      }
+    ]
+  },
+  options: {
+    animation: false,
+    responsive: false,
+    scales: {
+      x: {
+        title: { display: true, text: 'Time' }
+      },
+      y: {
+        title: { display: true, text: 'Count' },
+        beginAtZero: true
+      }
+    }
+  }
+});
+
 // update display values
 speedVal.textContent = speedInput.value;
 speedBox.value = speedInput.value;
@@ -196,6 +233,27 @@ function step() {
       carnivores.splice(i, 1);
     }
   }
+
+  stepCount++;
+  updateChart();
+}
+
+function updateChart() {
+  let grassCount = 0;
+  for (let x = 0; x < gridWidth; x++) {
+    for (let y = 0; y < gridHeight; y++) {
+      if (grass[x][y]) grassCount++;
+    }
+  }
+  chart.data.labels.push(stepCount.toString());
+  chart.data.datasets[0].data.push(grassCount);
+  chart.data.datasets[1].data.push(herbivores.length);
+  if (chart.data.labels.length > maxDataPoints) {
+    chart.data.labels.shift();
+    chart.data.datasets[0].data.shift();
+    chart.data.datasets[1].data.shift();
+  }
+  chart.update();
 }
 
 function draw() {
