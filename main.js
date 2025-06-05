@@ -59,6 +59,11 @@ const carnGainVal = document.getElementById('carnGainVal');
 const carnEnergyInput = document.getElementById('carnEnergy');
 const carnEnergyBox = document.getElementById('carnEnergyBox');
 const carnEnergyVal = document.getElementById('carnEnergyVal');
+const pauseBtn = document.getElementById('pauseBtn');
+const resumeBtn = document.getElementById('resumeBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+let running = true;
 
 let speedAccumulator = 0;
 
@@ -157,12 +162,29 @@ function randPos() {
   };
 }
 
-for (let i = 0; i < initialHerbivores; i++) {
-  herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2, cooldown: 0 });
+function initSimulation() {
+  for (let x = 0; x < gridWidth; x++) {
+    for (let y = 0; y < gridHeight; y++) {
+      grass[x][y] = true;
+      grassTimer[x][y] = 0;
+    }
+  }
+  herbivores = [];
+  for (let i = 0; i < initialHerbivores; i++) {
+    herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2, cooldown: 0 });
+  }
+  carnivores = [];
+  for (let i = 0; i < initialCarnivores; i++) {
+    carnivores.push({ ...randPos(), energy: carnivoreReproduceEnergy / 2 });
+  }
+  stepCount = 0;
+  speedAccumulator = 0;
+  chart.data.labels = [];
+  chart.data.datasets.forEach(ds => ds.data = []);
+  chart.update();
 }
-for (let i = 0; i < initialCarnivores; i++) {
-  carnivores.push({ ...randPos(), energy: carnivoreReproduceEnergy / 2 });
-}
+
+initSimulation();
 
 function moveAgent(agent) {
   const dx = Math.floor(Math.random() * 3) - 1;
@@ -286,13 +308,19 @@ function draw() {
 }
 
 function loop() {
-  speedAccumulator += parseFloat(speedInput.value);
-  while (speedAccumulator >= 1) {
-    step();
-    speedAccumulator -= 1;
+  if (running) {
+    speedAccumulator += parseFloat(speedInput.value);
+    while (speedAccumulator >= 1) {
+      step();
+      speedAccumulator -= 1;
+    }
   }
   draw();
   requestAnimationFrame(loop);
 }
+
+pauseBtn.addEventListener('click', () => { running = false; });
+resumeBtn.addEventListener('click', () => { running = true; });
+resetBtn.addEventListener('click', () => { initSimulation(); });
 
 loop();
