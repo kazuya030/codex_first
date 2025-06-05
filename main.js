@@ -83,80 +83,35 @@ carnEnergyVal.textContent = carnEnergyInput.value;
 carnEnergyBox.value = carnEnergyInput.value;
 herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
 
-herbEnergyInput.addEventListener('input', () => {
-  herbEnergyVal.textContent = herbEnergyInput.value;
-  herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
-  herbEnergyBox.value = herbEnergyInput.value;
+function bindControl(slider, box, display, callback) {
+  const fromSlider = () => {
+    box.value = slider.value;
+    display.textContent = slider.value;
+    if (callback) callback(slider.value);
+  };
+  const fromBox = () => {
+    slider.value = box.value;
+    display.textContent = box.value;
+    if (callback) callback(box.value);
+  };
+  slider.addEventListener('input', fromSlider);
+  box.addEventListener('input', fromBox);
+  slider.addEventListener('change', fromSlider);
+  box.addEventListener('change', fromBox);
+  fromSlider();
+}
+
+bindControl(speedInput, speedBox, speedVal);
+bindControl(herbCooldownInput, herbCooldownBox, herbCooldownVal);
+bindControl(herbEnergyInput, herbEnergyBox, herbEnergyVal, v => {
+  herbivoreReproduceEnergy = parseInt(v, 10);
 });
-herbEnergyBox.addEventListener('input', () => {
-  herbEnergyInput.value = herbEnergyBox.value;
-  herbEnergyVal.textContent = herbEnergyBox.value;
-  herbivoreReproduceEnergy = parseInt(herbEnergyBox.value, 10);
-});
-speedInput.addEventListener('input', () => {
-  speedVal.textContent = speedInput.value;
-  speedBox.value = speedInput.value;
-});
-speedBox.addEventListener('input', () => {
-  speedInput.value = speedBox.value;
-  speedVal.textContent = speedBox.value;
-});
-herbCooldownInput.addEventListener('input', () => {
-  herbCooldownVal.textContent = herbCooldownInput.value;
-  herbCooldownBox.value = herbCooldownInput.value;
-});
-herbCooldownBox.addEventListener('input', () => {
-  herbCooldownInput.value = herbCooldownBox.value;
-  herbCooldownVal.textContent = herbCooldownBox.value;
-});
-grassRegrowInput.addEventListener('input', () => {
-  grassRegrowVal.textContent = grassRegrowInput.value;
-  grassRegrowBox.value = grassRegrowInput.value;
-});
-grassRegrowBox.addEventListener('input', () => {
-  grassRegrowInput.value = grassRegrowBox.value;
-  grassRegrowVal.textContent = grassRegrowBox.value;
-});
-herbMoveInput.addEventListener('input', () => {
-  herbMoveVal.textContent = herbMoveInput.value;
-  herbMoveBox.value = herbMoveInput.value;
-});
-herbMoveBox.addEventListener('input', () => {
-  herbMoveInput.value = herbMoveBox.value;
-  herbMoveVal.textContent = herbMoveBox.value;
-});
-carnMoveInput.addEventListener('input', () => {
-  carnMoveVal.textContent = carnMoveInput.value;
-  carnMoveBox.value = carnMoveInput.value;
-});
-carnMoveBox.addEventListener('input', () => {
-  carnMoveInput.value = carnMoveBox.value;
-  carnMoveVal.textContent = carnMoveBox.value;
-});
-herbGainInput.addEventListener('input', () => {
-  herbGainVal.textContent = herbGainInput.value;
-  herbGainBox.value = herbGainInput.value;
-});
-herbGainBox.addEventListener('input', () => {
-  herbGainInput.value = herbGainBox.value;
-  herbGainVal.textContent = herbGainBox.value;
-});
-carnGainInput.addEventListener('input', () => {
-  carnGainVal.textContent = carnGainInput.value;
-  carnGainBox.value = carnGainInput.value;
-});
-carnGainBox.addEventListener('input', () => {
-  carnGainInput.value = carnGainBox.value;
-  carnGainVal.textContent = carnGainBox.value;
-});
-carnEnergyInput.addEventListener('input', () => {
-  carnEnergyVal.textContent = carnEnergyInput.value;
-  carnEnergyBox.value = carnEnergyInput.value;
-});
-carnEnergyBox.addEventListener('input', () => {
-  carnEnergyInput.value = carnEnergyBox.value;
-  carnEnergyVal.textContent = carnEnergyBox.value;
-});
+bindControl(grassRegrowInput, grassRegrowBox, grassRegrowVal);
+bindControl(herbMoveInput, herbMoveBox, herbMoveVal);
+bindControl(carnMoveInput, carnMoveBox, carnMoveVal);
+bindControl(herbGainInput, herbGainBox, herbGainVal);
+bindControl(carnGainInput, carnGainBox, carnGainVal);
+bindControl(carnEnergyInput, carnEnergyBox, carnEnergyVal);
 
 function randPos() {
   return {
