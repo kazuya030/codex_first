@@ -33,65 +33,129 @@ const carnivoreReproduceEnergy = 30;
 
 // UI elements
 const speedInput = document.getElementById('speed');
+const speedBox = document.getElementById('speedBox');
 const speedVal = document.getElementById('speedVal');
 const herbCooldownInput = document.getElementById('herbCooldown');
+const herbCooldownBox = document.getElementById('herbCooldownBox');
 const herbCooldownVal = document.getElementById('herbCooldownVal');
 const herbEnergyInput = document.getElementById('herbEnergy');
+const herbEnergyBox = document.getElementById('herbEnergyBox');
 const herbEnergyVal = document.getElementById('herbEnergyVal');
 const grassRegrowInput = document.getElementById('grassRegrow');
+const grassRegrowBox = document.getElementById('grassRegrowBox');
 const grassRegrowVal = document.getElementById('grassRegrowVal');
 const herbMoveInput = document.getElementById('herbMove');
+const herbMoveBox = document.getElementById('herbMoveBox');
 const herbMoveVal = document.getElementById('herbMoveVal');
 const carnMoveInput = document.getElementById('carnMove');
+const carnMoveBox = document.getElementById('carnMoveBox');
 const carnMoveVal = document.getElementById('carnMoveVal');
 const herbGainInput = document.getElementById('herbGain');
+const herbGainBox = document.getElementById('herbGainBox');
 const herbGainVal = document.getElementById('herbGainVal');
 const carnGainInput = document.getElementById('carnGain');
+const carnGainBox = document.getElementById('carnGainBox');
 const carnGainVal = document.getElementById('carnGainVal');
 const carnEnergyInput = document.getElementById('carnEnergy');
+const carnEnergyBox = document.getElementById('carnEnergyBox');
 const carnEnergyVal = document.getElementById('carnEnergyVal');
 
 let speedAccumulator = 0;
 
 // update display values
 speedVal.textContent = speedInput.value;
+speedBox.value = speedInput.value;
 herbCooldownVal.textContent = herbCooldownInput.value;
+herbCooldownBox.value = herbCooldownInput.value;
 herbEnergyVal.textContent = herbEnergyInput.value;
+herbEnergyBox.value = herbEnergyInput.value;
 grassRegrowVal.textContent = grassRegrowInput.value;
+grassRegrowBox.value = grassRegrowInput.value;
 herbMoveVal.textContent = herbMoveInput.value;
+herbMoveBox.value = herbMoveInput.value;
 carnMoveVal.textContent = carnMoveInput.value;
+carnMoveBox.value = carnMoveInput.value;
 herbGainVal.textContent = herbGainInput.value;
+herbGainBox.value = herbGainInput.value;
 carnGainVal.textContent = carnGainInput.value;
+carnGainBox.value = carnGainInput.value;
 carnEnergyVal.textContent = carnEnergyInput.value;
+carnEnergyBox.value = carnEnergyInput.value;
 herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
 
 herbEnergyInput.addEventListener('input', () => {
   herbEnergyVal.textContent = herbEnergyInput.value;
   herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
+  herbEnergyBox.value = herbEnergyInput.value;
+});
+herbEnergyBox.addEventListener('input', () => {
+  herbEnergyInput.value = herbEnergyBox.value;
+  herbEnergyVal.textContent = herbEnergyBox.value;
+  herbivoreReproduceEnergy = parseInt(herbEnergyBox.value, 10);
 });
 speedInput.addEventListener('input', () => {
   speedVal.textContent = speedInput.value;
+  speedBox.value = speedInput.value;
+});
+speedBox.addEventListener('input', () => {
+  speedInput.value = speedBox.value;
+  speedVal.textContent = speedBox.value;
 });
 herbCooldownInput.addEventListener('input', () => {
   herbCooldownVal.textContent = herbCooldownInput.value;
+  herbCooldownBox.value = herbCooldownInput.value;
+});
+herbCooldownBox.addEventListener('input', () => {
+  herbCooldownInput.value = herbCooldownBox.value;
+  herbCooldownVal.textContent = herbCooldownBox.value;
 });
 grassRegrowInput.addEventListener('input', () => {
   grassRegrowVal.textContent = grassRegrowInput.value;
+  grassRegrowBox.value = grassRegrowInput.value;
+});
+grassRegrowBox.addEventListener('input', () => {
+  grassRegrowInput.value = grassRegrowBox.value;
+  grassRegrowVal.textContent = grassRegrowBox.value;
 });
 herbMoveInput.addEventListener('input', () => {
   herbMoveVal.textContent = herbMoveInput.value;
+  herbMoveBox.value = herbMoveInput.value;
+});
+herbMoveBox.addEventListener('input', () => {
+  herbMoveInput.value = herbMoveBox.value;
+  herbMoveVal.textContent = herbMoveBox.value;
 });
 carnMoveInput.addEventListener('input', () => {
   carnMoveVal.textContent = carnMoveInput.value;
+  carnMoveBox.value = carnMoveInput.value;
+});
+carnMoveBox.addEventListener('input', () => {
+  carnMoveInput.value = carnMoveBox.value;
+  carnMoveVal.textContent = carnMoveBox.value;
 });
 herbGainInput.addEventListener('input', () => {
   herbGainVal.textContent = herbGainInput.value;
+  herbGainBox.value = herbGainInput.value;
+});
+herbGainBox.addEventListener('input', () => {
+  herbGainInput.value = herbGainBox.value;
+  herbGainVal.textContent = herbGainBox.value;
 });
 carnGainInput.addEventListener('input', () => {
   carnGainVal.textContent = carnGainInput.value;
+  carnGainBox.value = carnGainInput.value;
+});
+carnGainBox.addEventListener('input', () => {
+  carnGainInput.value = carnGainBox.value;
+  carnGainVal.textContent = carnGainBox.value;
 });
 carnEnergyInput.addEventListener('input', () => {
   carnEnergyVal.textContent = carnEnergyInput.value;
+  carnEnergyBox.value = carnEnergyInput.value;
+});
+carnEnergyBox.addEventListener('input', () => {
+  carnEnergyInput.value = carnEnergyBox.value;
+  carnEnergyVal.textContent = carnEnergyBox.value;
 });
 
 function randPos() {

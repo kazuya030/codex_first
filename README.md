@@ -58,7 +58,7 @@ A live version is hosted on GitHub Pages: <https://kazuya030.github.io/codex_fir
 
 ### Controls
 
-Above the canvas there are sliders that let you tweak the behaviour while the simulation is running:
+Above the canvas there are sliders and numeric text boxes that let you tweak the behaviour while the simulation is running:
 
 - **Time Speed** – how many simulation steps are performed per animation frame.
 - **Herbivore Birth Cooldown** – number of steps a herbivore must wait after reproducing.
@@ -70,5 +70,5 @@ Above the canvas there are sliders that let you tweak the behaviour while the si
 - **Carnivore Energy Gain** – energy carnivores gain when eating a herbivore.
 - **Carnivore Reproduction Energy** – energy threshold required for carnivores to reproduce.
 
-Adjusting these values updates the simulation immediately.
+Adjusting these values updates the simulation immediately. You can either drag a slider or type a number for precise control.
 
