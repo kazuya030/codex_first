@@ -10,6 +10,44 @@
 </head>
 <body>
   <h1>Multi Agent Simulation</h1>
+  <div id="controls">
+    <div>
+      <label>Time Speed: <input type="range" id="speed" min="0" max="5" step="0.1" value="1" /></label>
+      <span id="speedVal">1</span>
+    </div>
+    <div>
+      <label>Herbivore Birth Cooldown: <input type="range" id="herbCooldown" min="0" max="50" value="0" /></label>
+      <span id="herbCooldownVal">0</span>
+    </div>
+    <div>
+      <label>Herbivore Reproduction Energy: <input type="range" id="herbEnergy" min="5" max="30" value="10" /></label>
+      <span id="herbEnergyVal">10</span>
+    </div>
+    <div>
+      <label>Grass Regrow Time: <input type="range" id="grassRegrow" min="1" max="100" value="20" /></label>
+      <span id="grassRegrowVal">20</span>
+    </div>
+    <div>
+      <label>Herbivore Energy Gain: <input type="range" id="herbGain" min="1" max="10" value="4" /></label>
+      <span id="herbGainVal">4</span>
+    </div>
+    <div>
+      <label>Herbivore Move Cost: <input type="range" id="herbMoveCost" min="0" max="5" step="0.1" value="1" /></label>
+      <span id="herbMoveCostVal">1</span>
+    </div>
+    <div>
+      <label>Carnivore Energy Gain: <input type="range" id="carnGain" min="1" max="40" value="20" /></label>
+      <span id="carnGainVal">20</span>
+    </div>
+    <div>
+      <label>Carnivore Move Cost: <input type="range" id="carnMoveCost" min="0" max="5" step="0.1" value="2" /></label>
+      <span id="carnMoveCostVal">2</span>
+    </div>
+    <div>
+      <label>Carnivore Reproduction Energy: <input type="range" id="carnEnergy" min="10" max="60" value="30" /></label>
+      <span id="carnEnergyVal">30</span>
+    </div>
+  </div>
   <canvas id="world" width="500" height="500"></canvas>
   <script src="main.js"></script>
 </body>
