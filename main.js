@@ -59,9 +59,10 @@ const carnGainVal = document.getElementById('carnGainVal');
 const carnEnergyInput = document.getElementById('carnEnergy');
 const carnEnergyBox = document.getElementById('carnEnergyBox');
 const carnEnergyVal = document.getElementById('carnEnergyVal');
-const pauseBtn = document.getElementById('pauseBtn');
-const resumeBtn = document.getElementById('resumeBtn');
+
+const pauseResumeBtn = document.getElementById('pauseResumeBtn');
 const resetBtn = document.getElementById('resetBtn');
+let animationId;
 
 let running = true;
 
@@ -182,9 +183,11 @@ function initSimulation() {
   chart.data.labels = [];
   chart.data.datasets.forEach(ds => ds.data = []);
   chart.update();
+  draw();
 }
 
 initSimulation();
+pauseResumeBtn.textContent = running ? 'Pause' : 'Resume';
 
 function moveAgent(agent) {
   const dx = Math.floor(Math.random() * 3) - 1;
@@ -308,19 +311,35 @@ function draw() {
 }
 
 function loop() {
-  if (running) {
-    speedAccumulator += parseFloat(speedInput.value);
-    while (speedAccumulator >= 1) {
-      step();
-      speedAccumulator -= 1;
-    }
+  if (!running) {
+    draw();
+    return;
+  }
+  speedAccumulator += parseFloat(speedInput.value);
+  while (speedAccumulator >= 1) {
+    step();
+    speedAccumulator -= 1;
   }
   draw();
-  requestAnimationFrame(loop);
+  animationId = requestAnimationFrame(loop);
 }
 
-pauseBtn.addEventListener('click', () => { running = false; });
-resumeBtn.addEventListener('click', () => { running = true; });
-resetBtn.addEventListener('click', () => { initSimulation(); });
+pauseResumeBtn.addEventListener('click', () => {
+  running = !running;
+  pauseResumeBtn.textContent = running ? 'Pause' : 'Resume';
+  if (running) {
+    animationId = requestAnimationFrame(loop);
+  } else {
+    cancelAnimationFrame(animationId);
+    draw();
+  }
+});
+resetBtn.addEventListener('click', () => {
+  initSimulation();
+  pauseResumeBtn.textContent = running ? 'Pause' : 'Resume';
+  if (!running) {
+    draw();
+  }
+});
 
-loop();
+animationId = requestAnimationFrame(loop);
