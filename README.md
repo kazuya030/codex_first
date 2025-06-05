@@ -54,3 +54,13 @@ Simply open `index.html` in a modern web browser with JavaScript enabled. The si
 
 No additional build tools or dependencies are required.
 
+### Controls
+
+Above the canvas there are sliders that let you tweak the behaviour while the simulation is running:
+
+- **Time Speed** – how many simulation steps are performed per animation frame.
+- **Herbivore Birth Cooldown** – number of steps a herbivore must wait after reproducing.
+- **Herbivore Reproduction Energy** – energy threshold required for herbivores to give birth.
+
+Adjusting these values updates the simulation immediately.
+
