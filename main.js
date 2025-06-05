@@ -8,7 +8,7 @@ const gridHeight = canvas.height / cellSize;
 // Environment
 const grass = [];
 const grassTimer = [];
-const grassRegrowTime = 20; // steps
+let grassRegrowTime = 20; // steps
 for (let x = 0; x < gridWidth; x++) {
   grass[x] = [];
   grassTimer[x] = [];
@@ -25,12 +25,87 @@ let carnivores = [];
 const initialHerbivores = 20;
 const initialCarnivores = 5;
 
-const herbivoreEnergyGainFromGrass = 4;
-const carnivoreEnergyGainFromMeat = 20;
-const herbivoreMoveCost = 1;
-const carnivoreMoveCost = 2;
-const herbivoreReproduceEnergy = 10;
-const carnivoreReproduceEnergy = 30;
+let herbivoreEnergyGainFromGrass = 4;
+let carnivoreEnergyGainFromMeat = 20;
+let herbivoreMoveCost = 1;
+let carnivoreMoveCost = 2;
+let herbivoreReproduceEnergy = 10;
+let carnivoreReproduceEnergy = 30;
+
+// UI elements
+const speedInput = document.getElementById('speed');
+const speedVal = document.getElementById('speedVal');
+const herbCooldownInput = document.getElementById('herbCooldown');
+const herbCooldownVal = document.getElementById('herbCooldownVal');
+const herbEnergyInput = document.getElementById('herbEnergy');
+const herbEnergyVal = document.getElementById('herbEnergyVal');
+const grassRegrowInput = document.getElementById('grassRegrow');
+const grassRegrowVal = document.getElementById('grassRegrowVal');
+const herbGainInput = document.getElementById('herbGain');
+const herbGainVal = document.getElementById('herbGainVal');
+const herbMoveCostInput = document.getElementById('herbMoveCost');
+const herbMoveCostVal = document.getElementById('herbMoveCostVal');
+const carnGainInput = document.getElementById('carnGain');
+const carnGainVal = document.getElementById('carnGainVal');
+const carnMoveCostInput = document.getElementById('carnMoveCost');
+const carnMoveCostVal = document.getElementById('carnMoveCostVal');
+const carnEnergyInput = document.getElementById('carnEnergy');
+const carnEnergyVal = document.getElementById('carnEnergyVal');
+
+// update display values
+speedVal.textContent = speedInput.value;
+herbCooldownVal.textContent = herbCooldownInput.value;
+herbEnergyVal.textContent = herbEnergyInput.value;
+grassRegrowVal.textContent = grassRegrowInput.value;
+herbGainVal.textContent = herbGainInput.value;
+herbMoveCostVal.textContent = herbMoveCostInput.value;
+carnGainVal.textContent = carnGainInput.value;
+carnMoveCostVal.textContent = carnMoveCostInput.value;
+carnEnergyVal.textContent = carnEnergyInput.value;
+herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
+let herbivoreBirthCooldown = parseInt(herbCooldownInput.value, 10);
+grassRegrowTime = parseInt(grassRegrowInput.value, 10);
+herbivoreEnergyGainFromGrass = parseInt(herbGainInput.value, 10);
+herbivoreMoveCost = parseFloat(herbMoveCostInput.value);
+carnivoreEnergyGainFromMeat = parseInt(carnGainInput.value, 10);
+carnivoreMoveCost = parseFloat(carnMoveCostInput.value);
+carnivoreReproduceEnergy = parseInt(carnEnergyInput.value, 10);
+
+herbEnergyInput.addEventListener('input', () => {
+  herbEnergyVal.textContent = herbEnergyInput.value;
+  herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
+});
+speedInput.addEventListener('input', () => {
+  speedVal.textContent = speedInput.value;
+});
+herbCooldownInput.addEventListener('input', () => {
+  herbCooldownVal.textContent = herbCooldownInput.value;
+  herbivoreBirthCooldown = parseInt(herbCooldownInput.value, 10);
+});
+grassRegrowInput.addEventListener('input', () => {
+  grassRegrowVal.textContent = grassRegrowInput.value;
+  grassRegrowTime = parseInt(grassRegrowInput.value, 10);
+});
+herbGainInput.addEventListener('input', () => {
+  herbGainVal.textContent = herbGainInput.value;
+  herbivoreEnergyGainFromGrass = parseInt(herbGainInput.value, 10);
+});
+herbMoveCostInput.addEventListener('input', () => {
+  herbMoveCostVal.textContent = herbMoveCostInput.value;
+  herbivoreMoveCost = parseFloat(herbMoveCostInput.value);
+});
+carnGainInput.addEventListener('input', () => {
+  carnGainVal.textContent = carnGainInput.value;
+  carnivoreEnergyGainFromMeat = parseInt(carnGainInput.value, 10);
+});
+carnMoveCostInput.addEventListener('input', () => {
+  carnMoveCostVal.textContent = carnMoveCostInput.value;
+  carnivoreMoveCost = parseFloat(carnMoveCostInput.value);
+});
+carnEnergyInput.addEventListener('input', () => {
+  carnEnergyVal.textContent = carnEnergyInput.value;
+  carnivoreReproduceEnergy = parseInt(carnEnergyInput.value, 10);
+});
 
 function randPos() {
   return {
@@ -40,7 +115,7 @@ function randPos() {
 }
 
 for (let i = 0; i < initialHerbivores; i++) {
-  herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2 });
+  herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2, cooldown: 0 });
 }
 for (let i = 0; i < initialCarnivores; i++) {
   carnivores.push({ ...randPos(), energy: carnivoreReproduceEnergy / 2 });
@@ -71,15 +146,17 @@ function step() {
   for (let i = herbivores.length - 1; i >= 0; i--) {
     const h = herbivores[i];
     h.energy -= herbivoreMoveCost;
+    if (h.cooldown > 0) h.cooldown--;
     moveAgent(h);
     if (grass[h.x][h.y]) {
       grass[h.x][h.y] = false;
       grassTimer[h.x][h.y] = 0;
       h.energy += herbivoreEnergyGainFromGrass;
     }
-    if (h.energy > herbivoreReproduceEnergy) {
+    if (h.energy > herbivoreReproduceEnergy && h.cooldown === 0) {
       h.energy /= 2;
-      herbivores.push({ x: h.x, y: h.y, energy: h.energy });
+      herbivores.push({ x: h.x, y: h.y, energy: h.energy, cooldown: herbivoreBirthCooldown });
+      h.cooldown = herbivoreBirthCooldown;
     }
     if (h.energy <= 0) {
       herbivores.splice(i, 1);
@@ -136,8 +213,14 @@ function draw() {
   });
 }
 
+let stepAccumulator = 0;
 function loop() {
-  step();
+  const speed = parseFloat(speedInput.value);
+  stepAccumulator += speed;
+  while (stepAccumulator >= 1) {
+    step();
+    stepAccumulator -= 1;
+  }
   draw();
   requestAnimationFrame(loop);
 }

@@ -54,3 +54,19 @@ Simply open `index.html` in a modern web browser with JavaScript enabled. The si
 
 No additional build tools or dependencies are required.
 
+### Controls
+
+Above the canvas there are sliders that let you tweak the behaviour while the simulation is running:
+
+ - **Time Speed** – number of steps executed per frame (0 slows to a pause, values can be fractional).
+- **Herbivore Birth Cooldown** – number of steps a herbivore must wait after reproducing.
+- **Herbivore Reproduction Energy** – energy threshold required for herbivores to give birth.
+- **Grass Regrow Time** – steps required for eaten grass to return.
+- **Herbivore Energy Gain** – energy gained from eating grass.
+- **Herbivore Move Cost** – energy lost each step a herbivore moves.
+- **Carnivore Energy Gain** – energy gained when a carnivore eats a herbivore.
+- **Carnivore Move Cost** – energy lost each step a carnivore moves.
+- **Carnivore Reproduction Energy** – threshold for carnivores to reproduce.
+
+Adjusting these values updates the simulation immediately.
+
