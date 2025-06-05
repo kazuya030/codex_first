@@ -29,8 +29,33 @@ const herbivoreEnergyGainFromGrass = 4;
 const carnivoreEnergyGainFromMeat = 20;
 const herbivoreMoveCost = 1;
 const carnivoreMoveCost = 2;
-const herbivoreReproduceEnergy = 10;
+let herbivoreReproduceEnergy = 10;
 const carnivoreReproduceEnergy = 30;
+
+// UI elements
+const speedInput = document.getElementById('speed');
+const speedVal = document.getElementById('speedVal');
+const herbCooldownInput = document.getElementById('herbCooldown');
+const herbCooldownVal = document.getElementById('herbCooldownVal');
+const herbEnergyInput = document.getElementById('herbEnergy');
+const herbEnergyVal = document.getElementById('herbEnergyVal');
+
+// update display values
+speedVal.textContent = speedInput.value;
+herbCooldownVal.textContent = herbCooldownInput.value;
+herbEnergyVal.textContent = herbEnergyInput.value;
+herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
+
+herbEnergyInput.addEventListener('input', () => {
+  herbEnergyVal.textContent = herbEnergyInput.value;
+  herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
+});
+speedInput.addEventListener('input', () => {
+  speedVal.textContent = speedInput.value;
+});
+herbCooldownInput.addEventListener('input', () => {
+  herbCooldownVal.textContent = herbCooldownInput.value;
+});
 
 function randPos() {
   return {
@@ -40,7 +65,7 @@ function randPos() {
 }
 
 for (let i = 0; i < initialHerbivores; i++) {
-  herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2 });
+  herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2, cooldown: 0 });
 }
 for (let i = 0; i < initialCarnivores; i++) {
   carnivores.push({ ...randPos(), energy: carnivoreReproduceEnergy / 2 });
@@ -68,18 +93,22 @@ function step() {
   }
 
   // Herbivores act
+  const reproduceEnergy = parseInt(herbEnergyInput.value, 10);
+  const reproduceCooldown = parseInt(herbCooldownInput.value, 10);
   for (let i = herbivores.length - 1; i >= 0; i--) {
     const h = herbivores[i];
     h.energy -= herbivoreMoveCost;
+    if (h.cooldown > 0) h.cooldown--;
     moveAgent(h);
     if (grass[h.x][h.y]) {
       grass[h.x][h.y] = false;
       grassTimer[h.x][h.y] = 0;
       h.energy += herbivoreEnergyGainFromGrass;
     }
-    if (h.energy > herbivoreReproduceEnergy) {
+    if (h.energy > reproduceEnergy && h.cooldown === 0) {
       h.energy /= 2;
-      herbivores.push({ x: h.x, y: h.y, energy: h.energy });
+      herbivores.push({ x: h.x, y: h.y, energy: h.energy, cooldown: reproduceCooldown });
+      h.cooldown = reproduceCooldown;
     }
     if (h.energy <= 0) {
       herbivores.splice(i, 1);
@@ -137,7 +166,10 @@ function draw() {
 }
 
 function loop() {
-  step();
+  const speed = parseInt(speedInput.value, 10);
+  for (let i = 0; i < speed; i++) {
+    step();
+  }
   draw();
   requestAnimationFrame(loop);
 }

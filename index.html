@@ -10,6 +10,20 @@
 </head>
 <body>
   <h1>Multi Agent Simulation</h1>
+  <div id="controls">
+    <div>
+      <label>Time Speed: <input type="range" id="speed" min="1" max="10" value="1" /></label>
+      <span id="speedVal">1</span>
+    </div>
+    <div>
+      <label>Herbivore Birth Cooldown: <input type="range" id="herbCooldown" min="0" max="50" value="0" /></label>
+      <span id="herbCooldownVal">0</span>
+    </div>
+    <div>
+      <label>Herbivore Reproduction Energy: <input type="range" id="herbEnergy" min="5" max="30" value="10" /></label>
+      <span id="herbEnergyVal">10</span>
+    </div>
+  </div>
   <canvas id="world" width="500" height="500"></canvas>
   <script src="main.js"></script>
 </body>
