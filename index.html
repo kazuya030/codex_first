@@ -6,6 +6,7 @@
   <style>
     body { font-family: sans-serif; text-align: center; }
     canvas { border: 1px solid #ccc; }
+    #populationChart { display: block; margin: 0 auto; }
   </style>
 </head>
 <body>
@@ -56,6 +57,11 @@
       <input type="number" id="carnEnergyBox" min="10" max="50" value="30" style="width:60px" />
       <span id="carnEnergyVal">30</span>
     </div>
+  </div>
+  <div id="simButtons">
+    <button id="pauseBtn">Pause</button>
+    <button id="resumeBtn">Resume</button>
+    <button id="resetBtn">Reset</button>
   </div>
   <canvas id="world" width="500" height="500"></canvas>
   <canvas id="populationChart" width="500" height="200"></canvas>
