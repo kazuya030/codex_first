@@ -3,7 +3,7 @@
  */
 
 // main.module.jsからクラスをインポート
-const { CONFIG, Agent, Herbivore, Carnivore, Grid, SimulationConfig } = require('../main.module.js');
+const { CONFIG, Agent, Herbivore, Carnivore, Grid, SimulationConfig } = require('./main.module.js');
 
 describe('Agent', () => {
   let agent;

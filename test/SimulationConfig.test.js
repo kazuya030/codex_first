@@ -3,7 +3,7 @@
  */
 
 // main.module.jsからクラスをインポート
-const { CONFIG, SimulationConfig } = require('../main.module.js');
+const { CONFIG, SimulationConfig } = require('./main.module.js');
 
 describe('SimulationConfig', () => {
   let config;

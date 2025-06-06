@@ -3,7 +3,7 @@
  */
 
 // main.module.jsからクラスをインポート
-const { UIManager, SimulationConfig } = require('../main.module.js');
+const { UIManager, SimulationConfig } = require('./main.module.js');
 
 describe('UIManager', () => {
   let uiManager;

@@ -14,8 +14,10 @@ This is a JavaScript multi-agent ecological simulation that models grass, herbiv
 
 ## Commands
 - **Run:** Open index.html in a browser (no build step needed)
+- **Build:** `cd test && node generate-module.js` - Auto-generates main.module.js from main.js for testing
 - **Lint:** No linting tools configured
-- **Test:** No test suite configured
+- **Test:** Jest test suite with setup for DOM mocking, Chart.js mocking, and Canvas API mocking (test files: Agent.test.js, Grid.test.js, SimulationConfig.test.js, UIManager.test.js)
+- **Pre-commit:** Update README.md before committing changes
 
 ## Code Style Guidelines
 - **Formatting:** Use 2-space indentation throughout

@@ -3,7 +3,7 @@
  */
 
 // main.module.jsからクラスをインポート
-const { Grid } = require('../main.module.js');
+const { Grid } = require('./main.module.js');
 
 describe('Grid', () => {
   let grid;

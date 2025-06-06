@@ -17,8 +17,14 @@ This repository contains a comprehensive multi-agent ecological simulation imple
 - **`index.html`** - Main HTML page with semantic structure and accessibility features
 - **`styles.css`** - External stylesheet with CSS custom properties and responsive design
 - **`main.js`** - Complete simulation logic using ES6 classes with extensive Japanese documentation
+- **`test/`** - Test suite with Jest configuration and auto-generation tools
+  - **`generate-module.js`** - Script to auto-generate test module from main.js
+  - **`main.module.js`** - Auto-generated module exports for testing (do not edit manually)
+  - **`setup.js`** - Jest configuration with DOM and Canvas mocking
+  - **`*.test.js`** - Unit tests for all major classes
 - **`README.md`** - This documentation file
 - **`CLAUDE.md`** - Development guidance file
+- **`AGENTS.md`** - AI assistant guidance file
 
 ## Architecture
 
@@ -66,6 +72,34 @@ The simulation uses a modern class-based architecture:
 4. Use controls to adjust parameters in real-time
 
 A live version is hosted on GitHub Pages: <https://kazuya030.github.io/codex_first/>
+
+## Development
+
+### Testing
+
+The project includes a comprehensive Jest test suite:
+
+```bash
+# Run all tests
+npm test
+
+# Generate test module from main.js
+cd test && node generate-module.js
+```
+
+**Test Coverage:**
+- **67 tests** across 4 test suites
+- Unit tests for all major classes: Agent, Herbivore, Carnivore, Grid, UIManager, SimulationConfig
+- DOM and Canvas API mocking for browser environment simulation
+- Automatic synchronization between main.js and test module
+
+### File Synchronization
+
+The project maintains two versions of the core logic:
+- **`main.js`** - Production version with full DOM integration
+- **`test/main.module.js`** - Auto-generated test version with module exports
+
+**Important:** Never edit `test/main.module.js` manually. Always run `cd test && node generate-module.js` after modifying `main.js` to regenerate the test module.
 
 ## Controls
 
