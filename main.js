@@ -68,7 +68,8 @@ const chart = new Chart(chartCtx, {
         label: 'Grass',
         data: [],
         borderColor: 'green',
-        fill: false
+        fill: false,
+        hidden: true
       },
       {
         label: 'Herbivores',
@@ -111,7 +112,7 @@ carnGainBox.value = carnGainInput.value;
 carnEnergyBox.value = carnEnergyInput.value;
 initialHerbBox.value = initialHerbInput.value;
 initialCarnBox.value = initialCarnInput.value;
-herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
+herbivoreReproduceEnergy = parseFloat(herbEnergyInput.value);
 
 function bindControl(slider, box, callback) {
   const fromSlider = () => {
@@ -132,7 +133,7 @@ function bindControl(slider, box, callback) {
 bindControl(speedInput, speedBox);
 bindControl(herbCooldownInput, herbCooldownBox);
 bindControl(herbEnergyInput, herbEnergyBox, v => {
-  herbivoreReproduceEnergy = parseInt(v, 10);
+  herbivoreReproduceEnergy = parseFloat(v);
 });
 bindControl(grassRegrowInput, grassRegrowBox);
 bindControl(herbMoveInput, herbMoveBox);
@@ -157,8 +158,8 @@ function initSimulation() {
       grassTimer[x][y] = 0;
     }
   }
-  const currentInitialHerbivores = parseInt(initialHerbInput.value, 10);
-  const currentInitialCarnivores = parseInt(initialCarnInput.value, 10);
+  const currentInitialHerbivores = Math.floor(parseFloat(initialHerbInput.value));
+  const currentInitialCarnivores = Math.floor(parseFloat(initialCarnInput.value));
   herbivores = [];
   for (let i = 0; i < currentInitialHerbivores; i++) {
     herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2, cooldown: 0 });
@@ -186,12 +187,12 @@ function moveAgent(agent) {
 }
 
 function step() {
-  const regrowTime = parseInt(grassRegrowInput.value, 10);
-  const herbMove = parseInt(herbMoveInput.value, 10);
-  const carnMove = parseInt(carnMoveInput.value, 10);
-  const herbGain = parseInt(herbGainInput.value, 10);
-  const carnGain = parseInt(carnGainInput.value, 10);
-  const carnReproduce = parseInt(carnEnergyInput.value, 10);
+  const regrowTime = parseFloat(grassRegrowInput.value);
+  const herbMove = parseFloat(herbMoveInput.value);
+  const carnMove = parseFloat(carnMoveInput.value);
+  const herbGain = parseFloat(herbGainInput.value);
+  const carnGain = parseFloat(carnGainInput.value);
+  const carnReproduce = parseFloat(carnEnergyInput.value);
   // Grass regrowth
   for (let x = 0; x < gridWidth; x++) {
     for (let y = 0; y < gridHeight; y++) {
@@ -206,8 +207,8 @@ function step() {
   }
 
   // Herbivores act
-  const reproduceEnergy = parseInt(herbEnergyInput.value, 10);
-  const reproduceCooldown = parseInt(herbCooldownInput.value, 10);
+  const reproduceEnergy = parseFloat(herbEnergyInput.value);
+  const reproduceCooldown = parseFloat(herbCooldownInput.value);
   for (let i = herbivores.length - 1; i >= 0; i--) {
     const h = herbivores[i];
     h.energy -= herbMove;
