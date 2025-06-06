@@ -21,44 +21,32 @@ for (let x = 0; x < gridWidth; x++) {
 let herbivores = [];
 let carnivores = [];
 
-const initialHerbivores = 20;
-const initialCarnivores = 5;
-
-const herbivoreEnergyGainFromGrass = 4; // default, UI overrides
-const carnivoreEnergyGainFromMeat = 20; // default, UI overrides
-const herbivoreMoveCost = 1; // default, UI overrides
-const carnivoreMoveCost = 2; // default, UI overrides
 let herbivoreReproduceEnergy = 10;
 const carnivoreReproduceEnergy = 30;
 
 // UI elements
 const speedInput = document.getElementById('speed');
 const speedBox = document.getElementById('speedBox');
-const speedVal = document.getElementById('speedVal');
 const herbCooldownInput = document.getElementById('herbCooldown');
 const herbCooldownBox = document.getElementById('herbCooldownBox');
-const herbCooldownVal = document.getElementById('herbCooldownVal');
 const herbEnergyInput = document.getElementById('herbEnergy');
 const herbEnergyBox = document.getElementById('herbEnergyBox');
-const herbEnergyVal = document.getElementById('herbEnergyVal');
 const grassRegrowInput = document.getElementById('grassRegrow');
 const grassRegrowBox = document.getElementById('grassRegrowBox');
-const grassRegrowVal = document.getElementById('grassRegrowVal');
 const herbMoveInput = document.getElementById('herbMove');
 const herbMoveBox = document.getElementById('herbMoveBox');
-const herbMoveVal = document.getElementById('herbMoveVal');
 const carnMoveInput = document.getElementById('carnMove');
 const carnMoveBox = document.getElementById('carnMoveBox');
-const carnMoveVal = document.getElementById('carnMoveVal');
 const herbGainInput = document.getElementById('herbGain');
 const herbGainBox = document.getElementById('herbGainBox');
-const herbGainVal = document.getElementById('herbGainVal');
 const carnGainInput = document.getElementById('carnGain');
 const carnGainBox = document.getElementById('carnGainBox');
-const carnGainVal = document.getElementById('carnGainVal');
 const carnEnergyInput = document.getElementById('carnEnergy');
 const carnEnergyBox = document.getElementById('carnEnergyBox');
-const carnEnergyVal = document.getElementById('carnEnergyVal');
+const initialHerbInput = document.getElementById('initialHerb');
+const initialHerbBox = document.getElementById('initialHerbBox');
+const initialCarnInput = document.getElementById('initialCarn');
+const initialCarnBox = document.getElementById('initialCarnBox');
 
 const pauseResumeBtn = document.getElementById('pauseResumeBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -87,6 +75,12 @@ const chart = new Chart(chartCtx, {
         data: [],
         borderColor: 'blue',
         fill: false
+      },
+      {
+        label: 'Carnivores',
+        data: [],
+        borderColor: 'red',
+        fill: false
       }
     ]
   },
@@ -106,35 +100,26 @@ const chart = new Chart(chartCtx, {
 });
 
 // update display values
-speedVal.textContent = speedInput.value;
 speedBox.value = speedInput.value;
-herbCooldownVal.textContent = herbCooldownInput.value;
 herbCooldownBox.value = herbCooldownInput.value;
-herbEnergyVal.textContent = herbEnergyInput.value;
 herbEnergyBox.value = herbEnergyInput.value;
-grassRegrowVal.textContent = grassRegrowInput.value;
 grassRegrowBox.value = grassRegrowInput.value;
-herbMoveVal.textContent = herbMoveInput.value;
 herbMoveBox.value = herbMoveInput.value;
-carnMoveVal.textContent = carnMoveInput.value;
 carnMoveBox.value = carnMoveInput.value;
-herbGainVal.textContent = herbGainInput.value;
 herbGainBox.value = herbGainInput.value;
-carnGainVal.textContent = carnGainInput.value;
 carnGainBox.value = carnGainInput.value;
-carnEnergyVal.textContent = carnEnergyInput.value;
 carnEnergyBox.value = carnEnergyInput.value;
+initialHerbBox.value = initialHerbInput.value;
+initialCarnBox.value = initialCarnInput.value;
 herbivoreReproduceEnergy = parseInt(herbEnergyInput.value, 10);
 
-function bindControl(slider, box, display, callback) {
+function bindControl(slider, box, callback) {
   const fromSlider = () => {
     box.value = slider.value;
-    display.textContent = slider.value;
     if (callback) callback(slider.value);
   };
   const fromBox = () => {
     slider.value = box.value;
-    display.textContent = box.value;
     if (callback) callback(box.value);
   };
   slider.addEventListener('input', fromSlider);
@@ -144,17 +129,19 @@ function bindControl(slider, box, display, callback) {
   fromSlider();
 }
 
-bindControl(speedInput, speedBox, speedVal);
-bindControl(herbCooldownInput, herbCooldownBox, herbCooldownVal);
-bindControl(herbEnergyInput, herbEnergyBox, herbEnergyVal, v => {
+bindControl(speedInput, speedBox);
+bindControl(herbCooldownInput, herbCooldownBox);
+bindControl(herbEnergyInput, herbEnergyBox, v => {
   herbivoreReproduceEnergy = parseInt(v, 10);
 });
-bindControl(grassRegrowInput, grassRegrowBox, grassRegrowVal);
-bindControl(herbMoveInput, herbMoveBox, herbMoveVal);
-bindControl(carnMoveInput, carnMoveBox, carnMoveVal);
-bindControl(herbGainInput, herbGainBox, herbGainVal);
-bindControl(carnGainInput, carnGainBox, carnGainVal);
-bindControl(carnEnergyInput, carnEnergyBox, carnEnergyVal);
+bindControl(grassRegrowInput, grassRegrowBox);
+bindControl(herbMoveInput, herbMoveBox);
+bindControl(carnMoveInput, carnMoveBox);
+bindControl(herbGainInput, herbGainBox);
+bindControl(carnGainInput, carnGainBox);
+bindControl(carnEnergyInput, carnEnergyBox);
+bindControl(initialHerbInput, initialHerbBox);
+bindControl(initialCarnInput, initialCarnBox);
 
 function randPos() {
   return {
@@ -170,12 +157,14 @@ function initSimulation() {
       grassTimer[x][y] = 0;
     }
   }
+  const currentInitialHerbivores = parseInt(initialHerbInput.value, 10);
+  const currentInitialCarnivores = parseInt(initialCarnInput.value, 10);
   herbivores = [];
-  for (let i = 0; i < initialHerbivores; i++) {
+  for (let i = 0; i < currentInitialHerbivores; i++) {
     herbivores.push({ ...randPos(), energy: herbivoreReproduceEnergy / 2, cooldown: 0 });
   }
   carnivores = [];
-  for (let i = 0; i < initialCarnivores; i++) {
+  for (let i = 0; i < currentInitialCarnivores; i++) {
     carnivores.push({ ...randPos(), energy: carnivoreReproduceEnergy / 2 });
   }
   stepCount = 0;
@@ -273,10 +262,12 @@ function updateChart() {
   chart.data.labels.push(stepCount.toString());
   chart.data.datasets[0].data.push(grassCount);
   chart.data.datasets[1].data.push(herbivores.length);
+  chart.data.datasets[2].data.push(carnivores.length);
   if (chart.data.labels.length > maxDataPoints) {
     chart.data.labels.shift();
     chart.data.datasets[0].data.shift();
     chart.data.datasets[1].data.shift();
+    chart.data.datasets[2].data.shift();
   }
   chart.update();
 }
