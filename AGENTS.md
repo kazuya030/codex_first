@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to OpenAI Codex and other AI coding assistants when working with code in this repository.
 
 ## Project Overview
 This is a JavaScript multi-agent ecological simulation that models grass, herbivores, and carnivores in a grid environment. The project features a modern class-based architecture with comprehensive Japanese documentation and accessibility features.
@@ -10,7 +10,8 @@ This is a JavaScript multi-agent ecological simulation that models grass, herbiv
 - **styles.css** - External stylesheet with CSS custom properties and responsive design
 - **main.js** - Complete simulation logic using ES6 classes with extensive Japanese comments
 - **README.md** - Project documentation
-- **CLAUDE.md** - This guidance file
+- **CLAUDE.md** - Guidance file for Claude Code
+- **AGENTS.md** - This guidance file for OpenAI Codex and other AI assistants
 
 ## Commands
 - **Run:** Open index.html in a browser (no build step needed)
@@ -53,4 +54,4 @@ This is a JavaScript multi-agent ecological simulation that models grass, herbiv
 - **Internationalization:** Japanese interface and documentation
 
 ## Synchronization Rule
-**IMPORTANT:** This file (CLAUDE.md) must be kept synchronized with AGENTS.md. Any updates to project structure, guidelines, or features should be applied to both files simultaneously to ensure consistency across different AI coding assistants.
+**IMPORTANT:** This file (AGENTS.md) must be kept synchronized with CLAUDE.md. Any updates to project structure, guidelines, or features should be applied to both files simultaneously to ensure consistency across different AI coding assistants.

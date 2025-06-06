@@ -1,69 +1,417 @@
 <!DOCTYPE html>
+<!--
+  Multi-Agent Simulation - 生態系シミュレーション
+  
+  このHTMLファイルは草食動物と肉食動物の生態系シミュレーションのUI部分を定義します。
+  
+  主な構成要素:
+  - パラメータ調整用のスライダーと数値入力
+  - シミュレーション制御ボタン
+  - メイン描画キャンバス
+  - 個体数推移グラフキャンバス
+  
+  @author Claude Code
+  @version 3.0 (HTML リファクタリング版)
+-->
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="草食動物と肉食動物の生態系をシミュレートするインタラクティブなアプリケーション" />
   <title>Multi Agent Simulation</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; }
-    canvas { border: 1px solid #ccc; }
-    #populationChart { display: block; margin: 0 auto; }
-  </style>
+  
+  <!-- ===== 外部スタイルシート読み込み ===== -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Multi Agent Simulation</h1>
-  <div id="controls">
-    <div>
-      <label>Time Speed: <input type="range" id="speed" min="0.1" max="10" step="0.1" value="1" /></label>
-      <input type="number" id="speedBox" min="0.1" max="10" step="0.1" value="1" style="width:60px" />
-    </div>
-    <div>
-      <label>Herbivore Birth Cooldown: <input type="range" id="herbCooldown" min="0" max="50" step="0.1" value="0" /></label>
-      <input type="number" id="herbCooldownBox" min="0" max="50" step="0.1" value="0" style="width:60px" />
-    </div>
-    <div>
-      <label>Herbivore Reproduction Energy: <input type="range" id="herbEnergy" min="5" max="30" step="0.1" value="10" /></label>
-      <input type="number" id="herbEnergyBox" min="5" max="30" step="0.1" value="10" style="width:60px" />
-    </div>
-    <div>
-      <label>Grass Regrow Time: <input type="range" id="grassRegrow" min="1" max="100" step="0.1" value="20" /></label>
-      <input type="number" id="grassRegrowBox" min="1" max="100" step="0.1" value="20" style="width:60px" />
-    </div>
-    <div>
-      <label>Herbivore Move Cost: <input type="range" id="herbMove" min="0" max="5" step="0.1" value="1" /></label>
-      <input type="number" id="herbMoveBox" min="0" max="5" step="0.1" value="1" style="width:60px" />
-    </div>
-    <div>
-      <label>Carnivore Move Cost: <input type="range" id="carnMove" min="0" max="5" step="0.1" value="1.2" /></label>
-      <input type="number" id="carnMoveBox" min="0" max="5" step="0.1" value="1.2" style="width:60px" />
-    </div>
-    <div>
-      <label>Herbivore Energy Gain: <input type="range" id="herbGain" min="1" max="10" step="0.1" value="4" /></label>
-      <input type="number" id="herbGainBox" min="1" max="10" step="0.1" value="4" style="width:60px" />
-    </div>
-    <div>
-      <label>Carnivore Energy Gain: <input type="range" id="carnGain" min="1" max="50" step="0.1" value="20" /></label>
-      <input type="number" id="carnGainBox" min="1" max="50" step="0.1" value="20" style="width:60px" />
-    </div>
-    <div>
-      <label>Carnivore Reproduction Energy: <input type="range" id="carnEnergy" min="10" max="50" step="0.1" value="30" /></label>
-      <input type="number" id="carnEnergyBox" min="10" max="50" step="0.1" value="30" style="width:60px" />
-    </div>
-    <div>
-      <label>Initial Herbivores: <input type="range" id="initialHerb" min="1" max="50" value="20" /></label>
-      <input type="number" id="initialHerbBox" min="1" max="50" value="20" style="width:60px" />
-    </div>
-    <div>
-      <label>Initial Carnivores: <input type="range" id="initialCarn" min="1" max="200" value="100" /></label>
-      <input type="number" id="initialCarnBox" min="1" max="200" value="100" style="width:60px" />
-    </div>
+  <div class="app-container">
+    <!-- ===== メインヘッダー ===== -->
+    <header class="main-header">
+      <h1 class="main-title">Multi Agent Simulation</h1>
+      <p class="app-description">草食動物と肉食動物の生態系をシミュレートするインタラクティブなアプリケーション</p>
+    </header>
+    
+    <!-- ===== パラメータ制御パネル ===== -->
+    <section class="controls-panel" aria-label="シミュレーションパラメータ制御">
+      <h2 class="controls-title">シミュレーションパラメータ</h2>
+      
+      <div class="parameter-groups">
+        
+        <!-- ===== 基本設定グループ ===== -->
+        <div class="parameter-group">
+          <h3 class="group-title">基本設定</h3>
+          
+          <!-- シミュレーション速度制御 -->
+          <div class="parameter-control">
+            <label for="speed" class="control-label">シミュレーション速度</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="speed" 
+                class="range-input"
+                min="0.1" 
+                max="10" 
+                step="0.1" 
+                value="1"
+                aria-describedby="speed-help" 
+              />
+              <input 
+                type="number" 
+                id="speedBox" 
+                class="number-input"
+                min="0.1" 
+                max="10" 
+                step="0.1" 
+                value="1"
+                aria-label="シミュレーション速度（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="speed-help" class="sr-only">値が大きいほど高速実行（1.0が標準速度）</div>
+          
+        </div>
+        
+        <!-- ===== 草食動物設定グループ ===== -->
+        <div class="parameter-group">
+          <h3 class="group-title">草食動物設定</h3>
+          
+          <!-- 草食動物の繁殖クールダウン時間 -->
+          <div class="parameter-control">
+            <label for="herbCooldown" class="control-label">繁殖クールダウン時間</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="herbCooldown" 
+                class="range-input"
+                min="0" 
+                max="50" 
+                step="0.1" 
+                value="0"
+                aria-describedby="herbCooldown-help"
+              />
+              <input 
+                type="number" 
+                id="herbCooldownBox" 
+                class="number-input"
+                min="0" 
+                max="50" 
+                step="0.1" 
+                value="0"
+                aria-label="草食動物繁殖クールダウン時間（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="herbCooldown-help" class="sr-only">繁殖後にこの期間は再度繁殖できない</div>
+          
+          <!-- 草食動物の繁殖エネルギー閾値 -->
+          <div class="parameter-control">
+            <label for="herbEnergy" class="control-label">繁殖エネルギー閾値</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="herbEnergy" 
+                class="range-input"
+                min="5" 
+                max="30" 
+                step="0.1" 
+                value="10"
+                aria-describedby="herbEnergy-help"
+              />
+              <input 
+                type="number" 
+                id="herbEnergyBox" 
+                class="number-input"
+                min="5" 
+                max="30" 
+                step="0.1" 
+                value="10"
+                aria-label="草食動物繁殖エネルギー閾値（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="herbEnergy-help" class="sr-only">この値を超えるエネルギーがあると繁殖可能</div>
+          
+          <!-- 草食動物の移動エネルギーコスト -->
+          <div class="parameter-control">
+            <label for="herbMove" class="control-label">移動エネルギーコスト</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="herbMove" 
+                class="range-input"
+                min="0" 
+                max="5" 
+                step="0.1" 
+                value="1"
+                aria-describedby="herbMove-help"
+              />
+              <input 
+                type="number" 
+                id="herbMoveBox" 
+                class="number-input"
+                min="0" 
+                max="5" 
+                step="0.1" 
+                value="1"
+                aria-label="草食動物移動エネルギーコスト（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="herbMove-help" class="sr-only">1ステップの移動で消費するエネルギー量</div>
+          
+          <!-- 草食動物のエネルギー獲得量 -->
+          <div class="parameter-control">
+            <label for="herbGain" class="control-label">エネルギー獲得量</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="herbGain" 
+                class="range-input"
+                min="1" 
+                max="10" 
+                step="0.1" 
+                value="4"
+                aria-describedby="herbGain-help"
+              />
+              <input 
+                type="number" 
+                id="herbGainBox" 
+                class="number-input"
+                min="1" 
+                max="10" 
+                step="0.1" 
+                value="4"
+                aria-label="草食動物エネルギー獲得量（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="herbGain-help" class="sr-only">草を1つ食べた時に得られるエネルギー</div>
+          
+          <!-- 初期草食動物数 -->
+          <div class="parameter-control">
+            <label for="initialHerb" class="control-label">初期個体数</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="initialHerb" 
+                class="range-input"
+                min="1" 
+                max="50" 
+                value="20"
+                aria-describedby="initialHerb-help"
+              />
+              <input 
+                type="number" 
+                id="initialHerbBox" 
+                class="number-input"
+                min="1" 
+                max="50" 
+                value="20"
+                aria-label="初期草食動物数（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="initialHerb-help" class="sr-only">シミュレーション開始時の草食動物の個体数</div>
+          
+        </div>
+        
+        <!-- ===== 肉食動物設定グループ ===== -->
+        <div class="parameter-group">
+          <h3 class="group-title">肉食動物設定</h3>
+          
+          <!-- 肉食動物の移動エネルギーコスト -->
+          <div class="parameter-control">
+            <label for="carnMove" class="control-label">移動エネルギーコスト</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="carnMove" 
+                class="range-input"
+                min="0" 
+                max="5" 
+                step="0.1" 
+                value="1.2"
+                aria-describedby="carnMove-help"
+              />
+              <input 
+                type="number" 
+                id="carnMoveBox" 
+                class="number-input"
+                min="0" 
+                max="5" 
+                step="0.1" 
+                value="1.2"
+                aria-label="肉食動物移動エネルギーコスト（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="carnMove-help" class="sr-only">1ステップの移動で消費するエネルギー量</div>
+          
+          <!-- 肉食動物のエネルギー獲得量 -->
+          <div class="parameter-control">
+            <label for="carnGain" class="control-label">エネルギー獲得量</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="carnGain" 
+                class="range-input"
+                min="1" 
+                max="50" 
+                step="0.1" 
+                value="20"
+                aria-describedby="carnGain-help"
+              />
+              <input 
+                type="number" 
+                id="carnGainBox" 
+                class="number-input"
+                min="1" 
+                max="50" 
+                step="0.1" 
+                value="20"
+                aria-label="肉食動物エネルギー獲得量（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="carnGain-help" class="sr-only">草食動物を1匹捕食した時に得られるエネルギー</div>
+          
+          <!-- 肉食動物の繁殖エネルギー閾値 -->
+          <div class="parameter-control">
+            <label for="carnEnergy" class="control-label">繁殖エネルギー閾値</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="carnEnergy" 
+                class="range-input"
+                min="10" 
+                max="50" 
+                step="0.1" 
+                value="30"
+                aria-describedby="carnEnergy-help"
+              />
+              <input 
+                type="number" 
+                id="carnEnergyBox" 
+                class="number-input"
+                min="10" 
+                max="50" 
+                step="0.1" 
+                value="30"
+                aria-label="肉食動物繁殖エネルギー閾値（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="carnEnergy-help" class="sr-only">この値を超えるエネルギーがあると繁殖可能</div>
+          
+          <!-- 初期肉食動物数 -->
+          <div class="parameter-control">
+            <label for="initialCarn" class="control-label">初期個体数</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="initialCarn" 
+                class="range-input"
+                min="1" 
+                max="200" 
+                value="100"
+                aria-describedby="initialCarn-help"
+              />
+              <input 
+                type="number" 
+                id="initialCarnBox" 
+                class="number-input"
+                min="1" 
+                max="200" 
+                value="100"
+                aria-label="初期肉食動物数（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="initialCarn-help" class="sr-only">シミュレーション開始時の肉食動物の個体数</div>
+          
+        </div>
+        
+        <!-- ===== 環境設定グループ ===== -->
+        <div class="parameter-group">
+          <h3 class="group-title">環境設定</h3>
+          
+          <!-- 草の再生時間 -->
+          <div class="parameter-control">
+            <label for="grassRegrow" class="control-label">草の再生時間</label>
+            <div class="control-inputs">
+              <input 
+                type="range" 
+                id="grassRegrow" 
+                class="range-input"
+                min="1" 
+                max="100" 
+                step="0.1" 
+                value="20"
+                aria-describedby="grassRegrow-help"
+              />
+              <input 
+                type="number" 
+                id="grassRegrowBox" 
+                class="number-input"
+                min="1" 
+                max="100" 
+                step="0.1" 
+                value="20"
+                aria-label="草の再生時間（数値入力）"
+              />
+            </div>
+          </div>
+          <div id="grassRegrow-help" class="sr-only">草が食べられてから再生するまでのステップ数</div>
+          
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- ===== シミュレーション制御ボタン ===== -->
+    <section class="simulation-controls" aria-label="シミュレーション制御">
+      <button id="pauseResumeBtn" class="control-button primary">Pause</button>
+      <button id="resetBtn" class="control-button">Reset</button>
+    </section>
+    
+    <!-- ===== キャンバス表示エリア ===== -->
+    <main class="canvas-container">
+      
+      <!-- メインシミュレーションキャンバス -->
+      <section aria-label="メインシミュレーション画面">
+        <h2 class="canvas-title">シミュレーション環境</h2>
+        <canvas 
+          id="world" 
+          class="simulation-canvas"
+          width="500" 
+          height="500"
+          aria-label="草、草食動物（青）、肉食動物（赤）が表示されるシミュレーション環境"
+        ></canvas>
+      </section>
+      
+      <!-- 個体数推移グラフキャンバス -->
+      <section aria-label="個体数推移グラフ">
+        <h2 class="canvas-title">個体数推移グラフ</h2>
+        <canvas 
+          id="populationChart" 
+          class="chart-canvas"
+          width="500" 
+          height="200"
+          aria-label="草（緑線）、草食動物（青線）、肉食動物（赤線）の個体数推移グラフ"
+        ></canvas>
+      </section>
+      
+    </main>
+    
   </div>
-  <div id="simButtons">
-    <button id="pauseResumeBtn">Pause</button>
-    <button id="resetBtn">Reset</button>
-  </div>
-  <canvas id="world" width="500" height="500"></canvas>
-  <canvas id="populationChart" width="500" height="200"></canvas>
+  
+  <!-- ===== 外部ライブラリ読み込み ===== -->
+  <!-- Chart.js: グラフ描画ライブラリ（CDN経由） -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- ===== メインJavaScriptファイル読み込み ===== -->
+  <!-- シミュレーションロジックとUI制御 -->
   <script src="main.js"></script>
+  
 </body>
 </html>

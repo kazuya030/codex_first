@@ -1,74 +1,119 @@
 # Multi Agent Simulation
 
-This repository contains a simple multi-agent simulation implemented in JavaScript. It models a grid-based world where herbivores and carnivores wander around, eat, reproduce, and die based on their energy.
+This repository contains a comprehensive multi-agent ecological simulation implemented in modern JavaScript. It models a grid-based ecosystem where grass, herbivores, and carnivores interact in a dynamic environment with real-time parameter control and population tracking.
+
+## Features
+
+- 🌱 **Three-tier ecosystem**: Grass → Herbivores → Carnivores
+- 🎛️ **Real-time controls**: Adjust all simulation parameters while running
+- 📊 **Population tracking**: Live charts showing species populations over time
+- ⏯️ **Simulation controls**: Pause, resume, and reset functionality
+- 📱 **Responsive design**: Works on desktop and mobile devices
+- ♿ **Accessible**: Full screen reader support and keyboard navigation
+- 🌐 **Bilingual**: Japanese interface with English documentation
 
 ## Repository Structure
 
-- `index.html` - Minimal HTML page that sets up a 500x500 canvas and loads `main.js`.
-- `main.js` - All simulation logic. Defines the environment, agent behaviour, drawing routines, and a main loop driven by `requestAnimationFrame`.
-- `README.md` - This documentation file.
+- **`index.html`** - Main HTML page with semantic structure and accessibility features
+- **`styles.css`** - External stylesheet with CSS custom properties and responsive design
+- **`main.js`** - Complete simulation logic using ES6 classes with extensive Japanese documentation
+- **`README.md`** - This documentation file
+- **`CLAUDE.md`** - Development guidance file
 
-The Git repository currently has two local branches, `main` and `work`, both pointing to the latest commit. No remote repository is configured.
+## Architecture
 
-### Commit history
+The simulation uses a modern class-based architecture:
 
-1. **Initial commit** – created the repository and added a basic README.
-2. **Add basic multi-agent simulation** – introduced `index.html` and `main.js` and updated the README with usage instructions.
-3. **Merge pull request #1** – merged the changes adding the simulation into the `main` branch.
+- **`UIManager`** - Handles all UI controls and parameter synchronization
+- **`SimulationConfig`** - Manages simulation parameters and settings
+- **`Grid`** - Manages grass growth and environment state
+- **`Agent`** - Base class for all moving entities
+- **`Herbivore`** - Grass-eating agents with reproduction cooldown
+- **`Carnivore`** - Predator agents that hunt herbivores
+- **`Renderer`** - Canvas-based rendering system
+- **`ChartManager`** - Chart.js integration for population graphs
+- **`Simulation`** - Main orchestrator class
 
-## Simulation Overview
+## Simulation Mechanics
 
-The world is a grid of 50x50 cells (10px per cell). Each cell may contain grass that regrows after being eaten.
+### Environment
+- **Grid size**: 50×50 cells (10px per cell)
+- **Grass regrowth**: Configurable timer-based regeneration
+- **Wraparound world**: Agents moving off one edge appear on the opposite side
 
-### Agents
+### Herbivores (Blue)
+- Move randomly, consuming energy per step
+- Eat grass to gain energy
+- Reproduce when energy exceeds threshold (after cooldown period)
+- Die when energy reaches zero
 
-- **Herbivores**
-  - Start with half of the energy required for reproduction.
-  - Move randomly each step, losing 1 energy per move.
-  - Eat grass on their current cell to gain 4 energy.
-  - Reproduce when their energy exceeds 10, splitting their energy with the offspring.
-  - Die when their energy drops to 0 or below.
+### Carnivores (Red)
+- Move randomly, consuming more energy than herbivores
+- Hunt herbivores on the same cell for energy
+- Reproduce when energy exceeds threshold
+- Die when energy reaches zero
 
-- **Carnivores**
-  - Start with half of the energy required for reproduction.
-  - Move randomly each step, losing 2 energy per move.
-  - If they land on a cell containing a herbivore, they consume it and gain 20 energy.
-  - Reproduce when their energy exceeds 30, splitting their energy with the offspring.
-  - Die when their energy drops to 0 or below.
-
-### Grass Regrowth
-
-After a herbivore eats grass, the patch becomes empty and starts a timer. Grass reappears on that cell after 20 steps.
-
-### Rendering
-
-The `draw` function paints each frame:
-
-- Grass patches are green while present, or gray when eaten.
-- Herbivores are drawn in blue.
-- Carnivores are drawn in red.
+### Grass (Green/Gray)
+- Grows on all cells initially
+- Consumed by herbivores, leaving empty patches (gray)
+- Regenerates after configurable time period
 
 ## Running the Simulation
 
-Simply open `index.html` in a modern web browser with JavaScript enabled. The simulation will start automatically and run continuously, updating the canvas on each animation frame.
-
-No additional build tools or dependencies are required.
+1. Open `index.html` in any modern web browser
+2. No build tools or dependencies required
+3. Simulation starts automatically
+4. Use controls to adjust parameters in real-time
 
 A live version is hosted on GitHub Pages: <https://kazuya030.github.io/codex_first/>
 
-### Controls
+## Controls
 
-Above the canvas there are sliders and numeric text boxes that let you tweak the behaviour while the simulation is running:
+The interface provides comprehensive real-time control over all simulation parameters:
 
-- **Time Speed** – how many simulation steps are performed per animation frame.
-- **Herbivore Birth Cooldown** – number of steps a herbivore must wait after reproducing.
-- **Herbivore Reproduction Energy** – energy threshold required for herbivores to give birth.
-- **Grass Regrow Time** – how many steps it takes for eaten grass to regrow.
-- **Herbivore Move Cost** – energy lost by herbivores each move.
-- **Carnivore Move Cost** – energy lost by carnivores each move.
-- **Herbivore Energy Gain** – energy herbivores receive when eating grass.
-- **Carnivore Energy Gain** – energy carnivores gain when eating a herbivore.
-- **Carnivore Reproduction Energy** – energy threshold required for carnivores to reproduce.
+### Basic Settings
+- **Simulation Speed** - Execution speed multiplier (0.1-10x)
 
-Adjusting these values updates the simulation immediately. You can either drag a slider or type a number for precise control.
+### Herbivore Settings
+- **Birth Cooldown** - Steps required between reproductions (0-50)
+- **Reproduction Energy** - Energy threshold for reproduction (5-30)
+- **Move Cost** - Energy lost per movement step (0-5)
+- **Energy Gain** - Energy gained from eating grass (1-10)
+- **Initial Count** - Starting population (1-50)
 
+### Carnivore Settings
+- **Move Cost** - Energy lost per movement step (0-5)
+- **Energy Gain** - Energy gained from hunting (1-50)
+- **Reproduction Energy** - Energy threshold for reproduction (10-50)
+- **Initial Count** - Starting population (1-200)
+
+### Environment Settings
+- **Grass Regrow Time** - Steps for grass regeneration (1-100)
+
+## Population Chart
+
+The simulation includes a real-time population chart showing:
+- **Grass** (Green line) - Total grass patches (initially hidden)
+- **Herbivores** (Blue line) - Herbivore population
+- **Carnivores** (Red line) - Carnivore population
+
+## Technical Features
+
+- **ES6+ JavaScript**: Modern class syntax and features
+- **Canvas Rendering**: Optimized 2D graphics
+- **Chart.js Integration**: Professional population tracking
+- **CSS Custom Properties**: Consistent theming system
+- **Responsive Design**: CSS Grid and Flexbox layouts
+- **Accessibility**: ARIA labels, screen reader support
+- **Parameter Persistence**: Real-time UI synchronization
+- **Error Handling**: Comprehensive error checking and logging
+
+## Browser Compatibility
+
+Requires a modern browser with support for:
+- ES6 Classes
+- Canvas 2D API
+- CSS Custom Properties
+- requestAnimationFrame
+
+Tested on Chrome, Firefox, Safari, and Edge.
